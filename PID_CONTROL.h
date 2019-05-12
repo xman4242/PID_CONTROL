@@ -1,18 +1,26 @@
 #ifndef _PID_CONTROL_H_
 #define _PID_CONTROL_H_
 
+//Macros
+#define DELTA_TIME 20 //Change in time between readings (millis)
+
+
 class PID_CONTROL
 {
+//The loop does not automatically time itself, it needs to be put into some kind of timer
 
 public:
 //Vars
-int ErrorNum = 0;
+int ErrorAmt = 0;
 int Integral = 0;
 int Derivative = 0;
 int PreviousError = 0;
-int FinalOutput = 0;
+int Kp = 0;
+int Ki = 0;
+int Kd = 0;
+
 //Functions
-void runPID(int Setpoint, int To_Set, int SensorInput, int Kp, int Ki, int Kd, bool Reversed);
+void runPID(int Setpoint, int SensorReading, int OutputVar, int Kp, int Ki, int Kd, int MinError, int MaxOutput, int MinOutput);
 
 private:
   
