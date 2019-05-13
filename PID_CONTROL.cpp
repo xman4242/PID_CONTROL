@@ -7,8 +7,9 @@
     Kp, Ki, and Kd are constants. To set them, see https://robotics.stackexchange.com/questions/167/what-are-good-strategies-for-tuning-pid-loops
     MinError is the amount of error that can be tolerated. This needs to be set to avoid error accumulating and causing large turns when small ones are needed.
     MaxOutput is the maximum value of your output variable. (ie a max motor speed when turning)
+    MinOutput does the exact opposite 
 */
-void PID_CONTROL::runPID(int Setpoint, int SensorReading, int OutputVar, int Kp, int Ki, int Kd, int MinError, int MaxOutput, int MinOutput)
+void PID_CONTROL::PIDLoop(int Setpoint, int SensorReading, int OutputVar, int Kp, int Ki, int Kd, int MinError, int MaxOutput, int MinOutput)
 {   
     //Read Input and determine error
     ErrorAmt = Setpoint - SensorReading;
@@ -21,7 +22,7 @@ void PID_CONTROL::runPID(int Setpoint, int SensorReading, int OutputVar, int Kp,
     //The derivative estimates future error from past error changes
     Derivative = (ErrorAmt - PreviousError)/DELTA_TIME;
 
-    //Output the New Value
+    //Output the New Value, ensuring it is inside of the possible values
     OutputVar = (Kp * ErrorAmt) + (Ki * Integral) + (Kd * Derivative);
     if(OutputVar > MaxOutput)
     {
@@ -40,4 +41,18 @@ void PID_CONTROL::runPID(int Setpoint, int SensorReading, int OutputVar, int Kp,
     {
         PreviousError = ErrorAmt;
     }
+}
+/*How to use: This is a P (Proportional) loop only. This is used when a full PID or PI loop is unnessescary. 
+    The setpoint is the desired reading from your sensor (ie a gyroscope value that reads 90 degrese after a right turn)
+    The SensorReading is the current value (ie the current gyroscope value)
+    The OutputVar is the Variable to store the output include
+    Kp is a constant. To set it, see https://robotics.stackexchange.com/questions/167/what-are-good-strategies-for-tuning-pid-loops
+    MinError is the amount of error that can be tolerated. This needs to be set to avoid error accumulating and causing large turns when small ones are needed.
+    MaxOutput is the maximum value of your output variable. (ie a max motor speed when turning)
+    MinOutput is the opposite
+*/
+void PID_CONTROL::PLoop(int Setpoint, int SensorReading, int OutputVar, int Kp, int MinError, int MaxOutput, int MinOutput)
+{   
+    ErrorAmt = Setpoint - SensorReading;
+    OutputVar = (Kp*ErrorAmt)+Setpoint;
 }

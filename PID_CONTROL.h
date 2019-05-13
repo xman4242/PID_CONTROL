@@ -20,7 +20,8 @@ int Ki = 0;
 int Kd = 0;
 
 //Functions
-void runPID(int Setpoint, int SensorReading, int OutputVar, int Kp, int Ki, int Kd, int MinError, int MaxOutput, int MinOutput);
+void PIDLoop(int Setpoint, int SensorReading, int OutputVar, int Kp, int Ki, int Kd, int MinError, int MaxOutput, int MinOutput);
+void PLoop(int Setpoint, int SensorReading, int OutputVar, int Kp, int MinError, int MaxOutput, int MinOutput);
 
 private:
   
